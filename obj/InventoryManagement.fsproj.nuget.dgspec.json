@@ -1,0 +1,91 @@
+{
+  "format": 1,
+  "restore": {
+    "/home/helicon/Desktop/InventoryManagement/InventoryManagement.fsproj": {}
+  },
+  "projects": {
+    "/home/helicon/Desktop/InventoryManagement/InventoryManagement.fsproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/helicon/Desktop/InventoryManagement/InventoryManagement.fsproj",
+        "projectName": "InventoryManagement",
+        "projectPath": "/home/helicon/Desktop/InventoryManagement/InventoryManagement.fsproj",
+        "packagesPath": "/home/helicon/.nuget/packages/",
+        "outputPath": "/home/helicon/Desktop/InventoryManagement/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/helicon/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {}
+          }
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
+            "FSharp.Core": {
+              "include": "Runtime, Compile, Build, Native, Analyzers, BuildTransitive",
+              "target": "Package",
+              "version": "[6.0.1, )",
+              "generatePathProperty": true
+            },
+            "Giraffe": {
+              "target": "Package",
+              "version": "[5.0.0, )",
+              "generatePathProperty": true
+            },
+            "Microsoft.AspNetCore.Authentication.Jwtbearer": {
+              "target": "Package",
+              "version": "[6.0.0, )",
+              "generatePathProperty": true
+            },
+            "Mondocks.Net": {
+              "target": "Package",
+              "version": "[0.4.2, )",
+              "generatePathProperty": true
+            },
+            "MongoDB.Driver": {
+              "target": "Package",
+              "version": "[2.14.1, )",
+              "generatePathProperty": true
+            },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[6.15.0, )",
+              "generatePathProperty": true
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/6.0.100/RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
