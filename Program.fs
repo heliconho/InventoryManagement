@@ -57,8 +57,15 @@ let configureLogging (builder:ILoggingBuilder) =
     let filter (l : LogLevel) = l.Equals LogLevel.Error
     builder.AddFilter(filter).AddConsole().AddDebug() |> ignore
 
+let configureCors(builder : CorsPolicyBuilder) = 
+    builder
+        .WithOrigins()
+        .AllowAnyHeader()
+        .AllowAnyMethod() 
+        |> ignore
+
 let configureApp(app:IApplicationBuilder) = 
-    app.UseCors(new Action<_>(fun (b: CorsPolicyBuilder) -> b.AllowAnyHeader() |> ignore; b.AllowAnyMethod() |> ignore))
+    app.UseCors(configureCors)
         .UseAuthentication()
         .UseGiraffeErrorHandler(errorHandler)
         .UseGiraffe(webApp)
@@ -75,8 +82,8 @@ let configureServices(services: IServiceCollection) =
                 ValidAudience = "all",
                 IssuerSigningKey = SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
             )) |> ignore
-    services.AddGiraffe() |> ignore
     services.AddCors() |> ignore
+    services.AddGiraffe() |> ignore
 
 
 //App Start
