@@ -71,6 +71,7 @@ let configureApp(app:IApplicationBuilder) =
         .UseGiraffe(webApp)
 
 let configureServices(services: IServiceCollection) = 
+    services.AddCors() |> ignore
     services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         .AddJwtBearer(fun options ->
             options.TokenValidationParameters <- TokenValidationParameters(
@@ -82,7 +83,6 @@ let configureServices(services: IServiceCollection) =
                 ValidAudience = "all",
                 IssuerSigningKey = SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
             )) |> ignore
-    services.AddCors() |> ignore
     services.AddGiraffe() |> ignore
 
 
