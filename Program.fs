@@ -59,9 +59,9 @@ let configureLogging (builder:ILoggingBuilder) =
 
 let configureCors(builder : CorsPolicyBuilder) = 
     builder
-        .WithOrigins()
         .AllowAnyHeader()
-        .AllowAnyMethod() 
+        .AllowAnyMethod()
+        .SetIsOriginAllowed(fun o -> true)
         |> ignore
 
 let configureApp(app:IApplicationBuilder) = 
