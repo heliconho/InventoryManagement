@@ -98,9 +98,9 @@ module UserRepo =
             | false -> 
                 let loginRes = updateUser {check[0] with Login = true; LastLogin = DateTimeOffset.Now.ToString("o"); }
                 match loginRes.IsAcknowledged with
-                | true -> return {msg = "Login Success"; token =  Some(buildToken check[0].Email).Value }
-                | false -> return {msg = "Login Failed"; token = ""}
-            | true -> return {msg = "Login Failed"; token = ""}
+                | true -> return {msg = "Login Success"; email = check[0].Email ;token =  Some(buildToken check[0].Email).Value }
+                | false -> return {msg = "Login Failed"; email = "" ; token = ""}
+            | true -> return {msg = "Login Failed";email = ""; token = ""}
         }
 
 module InventoryRepo = 

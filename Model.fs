@@ -35,7 +35,6 @@ type InventoryRequest = {
     Description : string
     SKU : string
     Category : string[]
-    Company : string
     Quantity : int
 }
 
@@ -76,6 +75,7 @@ type LoginRequest = {
 }
 type LoginResponse = {
     msg : string
+    email : string
     token : string
 }
 
