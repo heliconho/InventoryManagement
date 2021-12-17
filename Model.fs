@@ -73,13 +73,19 @@ type LoginRequest = {
     Email : string
     Password : string
 }
-type LoginResponse = {
-    msg : string
+type LoginSuccessResponse = {
+    lsrmsg : string
     email : string
     token : string
 }
+type LoginFailResponse = {
+    lfrmsg : string
+}
 
+type RegisterSuccessResponse = {
+    rsrmsg : string
+}
 
-type RegisterResponse = {
-    msg : string
+type RegisterfailResponse = {
+    rfrmsg : string
 }

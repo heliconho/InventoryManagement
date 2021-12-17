@@ -13,7 +13,11 @@ module UserHanlder =
             task {
                 let! loginpayload = JsonSerializer.DeserializeAsync<LoginRequest>(ctx.Request.Body)
                 let! loginResult = login loginpayload
-                return! json loginResult next ctx
+                match loginResult with
+                | Ok res -> 
+                    return! json res next ctx
+                | Error res -> 
+                    return! text res.lfrmsg next ctx 
             }
 
     let registerHandler = 
@@ -21,7 +25,11 @@ module UserHanlder =
             task {
                 let! registerpayload = JsonSerializer.DeserializeAsync<RegisterRequest>(ctx.Request.Body)
                 let! registerResult = register registerpayload
-                return! json registerResult next ctx
+                match registerResult with
+                | Ok res -> 
+                    return! json res next ctx
+                | Error res -> 
+                    return! text res.rfrmsg next ctx 
             }
 
 module InventoryHandler = 

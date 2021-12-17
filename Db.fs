@@ -86,8 +86,8 @@ module UserRepo =
                     }
                     printfn "%O" userRecord
                     let insertResult = insertUser {userRecord with Password = (md5 userRecord.Password)} //hash password
-                    return {msg = "Register Successed"}
-            | _ -> return { msg = sprintf "This Email Had been register with id: %s" (checkExists[0].Id.Value.ToString())}
+                    return Ok {rsrmsg = "Register Successed"}
+            | _ -> return Error { rfrmsg = sprintf "This Email Had been register with id: %s" (checkExists[0].Id.Value.ToString())}
         }
 
     let login loginObject = 
@@ -98,9 +98,9 @@ module UserRepo =
             | false -> 
                 let loginRes = updateUser {check[0] with Login = true; LastLogin = DateTimeOffset.Now.ToString("o"); }
                 match loginRes.IsAcknowledged with
-                | true -> return {msg = "Login Success"; email = check[0].Email ;token =  Some(buildToken check[0].Email).Value }
-                | false -> return {msg = "Login Failed"; email = "" ; token = ""}
-            | true -> return {msg = "Login Failed";email = ""; token = ""}
+                | true -> return Ok {lsrmsg = "Login Success"; email = check[0].Email ;token =  Some(buildToken check[0].Email).Value }
+                | false -> return Error {lfrmsg = "Login Failed";}
+            | true -> return Error {lfrmsg = "Login Failed";}
         }
 
 module InventoryRepo = 
@@ -132,8 +132,8 @@ module InventoryRepo =
                         Active = false;
                     }
                     db.inventoryCollection.InsertOne(newInv)
-                    return {IRCode = 0;Msg = sprintf "%s created success" newInv.InventoryName}
-            | _ -> return {IRCode = 1;Msg = sprintf "%s created failed becuase SKU already exist" newInventory.InventoryName}
+                    return Ok {IRCode = 0;Msg = sprintf "%s created success" newInv.InventoryName}
+            | _ -> return Error {IRCode = 1;Msg = sprintf "%s created failed becuase SKU already exist" newInventory.InventoryName}
 
         }
         
@@ -156,8 +156,8 @@ module InventoryRepo =
                         Set((fun i -> i.Active),newInventory.Active)
         let updateRes = db.inventoryCollection.UpdateOne(filter,update)
         match updateRes.IsAcknowledged with
-        | true -> { URCode = updateRes.ModifiedCount; Msg = sprintf "%s Update Success" newInventory.InventoryName}
-        | false -> { URCode = updateRes.ModifiedCount; Msg = sprintf "%s Update Failed" newInventory.InventoryName}
+        | true -> Ok { URCode = updateRes.ModifiedCount; Msg = sprintf "%s Update Success" newInventory.InventoryName}
+        | false -> Error { URCode = updateRes.ModifiedCount; Msg = sprintf "%s Update Failed" newInventory.InventoryName}
     let updateNInventory (newInventories : Inventories) = 
         newInventories |> Array.map(fun i -> updateInventory i)
     let removeInventory (inventoryId : BsonObjectId) = 
