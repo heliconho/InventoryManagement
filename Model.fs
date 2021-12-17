@@ -74,18 +74,22 @@ type LoginRequest = {
     Password : string
 }
 type LoginSuccessResponse = {
+    status : int
     lsrmsg : string
     email : string
     token : string
 }
 type LoginFailResponse = {
+    status : int
     lfrmsg : string
 }
 
 type RegisterSuccessResponse = {
+    status : int
     rsrmsg : string
 }
 
 type RegisterfailResponse = {
+    status : int
     rfrmsg : string
 }

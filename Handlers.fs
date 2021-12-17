@@ -29,7 +29,7 @@ module UserHanlder =
                 | Ok res -> 
                     return! json res next ctx
                 | Error res -> 
-                    return! text res.rfrmsg next ctx 
+                    return! json res next ctx 
             }
 
 module InventoryHandler = 

@@ -86,8 +86,8 @@ module UserRepo =
                     }
                     printfn "%O" userRecord
                     let insertResult = insertUser {userRecord with Password = (md5 userRecord.Password)} //hash password
-                    return Ok {rsrmsg = "Register Successed"}
-            | _ -> return Error { rfrmsg = sprintf "This Email Had been register with id: %s" (checkExists[0].Id.Value.ToString())}
+                    return Ok {status = 200; rsrmsg = "Register Successed"}
+            | _ -> return Error {status = 400; rfrmsg = sprintf "This Email Had been register with id: %s" (checkExists[0].Id.Value.ToString())}
         }
 
     let login loginObject = 
@@ -98,9 +98,9 @@ module UserRepo =
             | false -> 
                 let loginRes = updateUser {check[0] with Login = true; LastLogin = DateTimeOffset.Now.ToString("o"); }
                 match loginRes.IsAcknowledged with
-                | true -> return Ok {lsrmsg = "Login Success"; email = check[0].Email ;token =  Some(buildToken check[0].Email).Value }
-                | false -> return Error {lfrmsg = "Login Failed";}
-            | true -> return Error {lfrmsg = "Login Failed";}
+                | true -> return Ok {status = 200; lsrmsg = "Login Success"; email = check[0].Email ;token =  Some(buildToken check[0].Email).Value }
+                | false -> return Error {status = 400;lfrmsg = "Login Failed";}
+            | true -> return Error {status = 401;lfrmsg = "Login Failed";}
         }
 
 module InventoryRepo = 
