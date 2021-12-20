@@ -54,6 +54,7 @@ module InventoryHandler =
         fun (next :HttpFunc) (ctx: HttpContext) ->
             task{
                 let email = ctx.User.FindFirst ClaimTypes.NameIdentifier
+                printfn "email = %s" email.Value
                 let! getAllResult = getAllInventory email.Value
                 return! json getAllResult next ctx
             }

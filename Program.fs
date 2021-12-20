@@ -66,6 +66,7 @@ let configureCors(builder : CorsPolicyBuilder) =
 
 let configureApp(app:IApplicationBuilder) = 
     app.UseCors(configureCors)
+        .UseAuthorization()
         .UseAuthentication()
         .UseGiraffeErrorHandler(errorHandler)
         .UseGiraffe(webApp)
