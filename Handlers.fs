@@ -17,7 +17,7 @@ module UserHanlder =
                 | Ok res -> 
                     return! json res next ctx
                 | Error res -> 
-                    return! text res.lfrmsg next ctx 
+                    return! text res.msg next ctx 
             }
 
     let registerHandler = 

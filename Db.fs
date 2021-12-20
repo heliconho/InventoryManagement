@@ -86,8 +86,8 @@ module UserRepo =
                     }
                     printfn "%O" userRecord
                     let insertResult = insertUser {userRecord with Password = (md5 userRecord.Password)} //hash password
-                    return Ok {status = 200; rsrmsg = "Register Successed"}
-            | _ -> return Error {status = 400; rfrmsg = sprintf "This Email Had been register with id: %s" (checkExists[0].Id.Value.ToString())}
+                    return Ok {status = 200; msg = "Register Successed"; token = None.Value; email = None.Value}
+            | _ -> return Error {status = 400; msg = sprintf "This Email Had been register with id: %s" (checkExists[0].Id.Value.ToString()); token = None.Value; email = None.Value}
         }
 
     let login loginObject = 
@@ -98,9 +98,9 @@ module UserRepo =
             | false -> 
                 let loginRes = updateUser {check[0] with Login = true; LastLogin = DateTimeOffset.Now.ToString("o"); }
                 match loginRes.IsAcknowledged with
-                | true -> return Ok {status = 200; lsrmsg = "Login Success"; email = check[0].Email ;token =  Some(buildToken check[0].Email).Value }
-                | false -> return Error {status = 400;lfrmsg = "Login Failed";}
-            | true -> return Error {status = 401;lfrmsg = "Login Failed";}
+                | true -> return Ok {status = 200; msg = "Login Success"; email = Some(check[0].Email).Value ;token =  Some(buildToken check[0].Email).Value;}
+                | false -> return Error {status = 400;msg = "Login Failed"; token = None.Value; email = None.Value}
+            | true -> return Error {status = 401;msg = "Login Failed"; token = None.Value; email = None.Value}
         }
 
 module InventoryRepo = 
@@ -113,7 +113,7 @@ module InventoryRepo =
         }
     let findInventoryById (inventoryId : BsonObjectId) = db.inventoryCollection.Find(fun i -> i.Id.Value = inventoryId.Value).ToEnumerable() 
     let findInventoryBySKU (inventorySKU : string) = db.inventoryCollection.Find(fun i -> i.SKU = inventorySKU).ToEnumerable() 
-    let insertInventory (newInventory:InventoryRequest) (email : string)=
+    let insertInventory (newInventory:InventoryRequest) (email : string)  =
         task{
             let inv = findInventoryBySKU newInventory.SKU |> List.ofSeq
             match inv with
@@ -132,8 +132,8 @@ module InventoryRepo =
                         Active = false;
                     }
                     db.inventoryCollection.InsertOne(newInv)
-                    return Ok {IRCode = 0;Msg = sprintf "%s created success" newInv.InventoryName}
-            | _ -> return Error {IRCode = 1;Msg = sprintf "%s created failed becuase SKU already exist" newInventory.InventoryName}
+                    return Ok {Code = 0;msg = sprintf "%s created success" newInv.InventoryName}
+            | _ -> return Error {Code = 1;msg = sprintf "%s created failed becuase SKU already exist" newInventory.InventoryName}
 
         }
         
@@ -156,8 +156,8 @@ module InventoryRepo =
                         Set((fun i -> i.Active),newInventory.Active)
         let updateRes = db.inventoryCollection.UpdateOne(filter,update)
         match updateRes.IsAcknowledged with
-        | true -> Ok { URCode = updateRes.ModifiedCount; Msg = sprintf "%s Update Success" newInventory.InventoryName}
-        | false -> Error { URCode = updateRes.ModifiedCount; Msg = sprintf "%s Update Failed" newInventory.InventoryName}
+        | true -> Ok { Code = updateRes.ModifiedCount; msg = sprintf "%s Update Success" newInventory.InventoryName}
+        | false -> Error { Code = updateRes.ModifiedCount; msg = sprintf "%s Update Failed" newInventory.InventoryName}
     let updateNInventory (newInventories : Inventories) = 
         newInventories |> Array.map(fun i -> updateInventory i)
     let removeInventory (inventoryId : BsonObjectId) = 

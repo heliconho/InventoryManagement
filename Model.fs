@@ -40,14 +40,9 @@ type InventoryRequest = {
 
 type InventoriesRequest = InventoryRequest[]
 
-type InsertRes = {
-    IRCode : int64
-    Msg : string
-}
-
-type UpdateRes = {
-    URCode : int64
-    Msg : string
+type InventoryResponse = {
+    Code : int64
+    msg : string
 }
 
 type Inventories =InventoryDetail[]
@@ -73,23 +68,11 @@ type LoginRequest = {
     Email : string
     Password : string
 }
-type LoginSuccessResponse = {
-    status : int
-    lsrmsg : string
+
+type Response = {
+    status : int64
+    msg : string
     email : string
-    token : string
-}
-type LoginFailResponse = {
-    status : int
-    lfrmsg : string
-}
+    token : string }
 
-type RegisterSuccessResponse = {
-    status : int
-    rsrmsg : string
-}
-
-type RegisterfailResponse = {
-    status : int
-    rfrmsg : string
-}
+    
