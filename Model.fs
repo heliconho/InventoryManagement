@@ -41,7 +41,7 @@ type InventoryRequest = {
 type InventoriesRequest = InventoryRequest[]
 
 type InventoryResponse = {
-    Code : int64
+    code : int64
     msg : string
 }
 

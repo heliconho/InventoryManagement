@@ -132,8 +132,8 @@ module InventoryRepo =
                         Active = false;
                     }
                     db.inventoryCollection.InsertOne(newInv)
-                    return Ok {Code = 0;msg = sprintf "%s created success" newInv.InventoryName}
-            | _ -> return Error {Code = 1;msg = sprintf "%s created failed becuase SKU already exist" newInventory.InventoryName}
+                    return Ok {code = 0;msg = sprintf "%s created success" newInv.InventoryName}
+            | _ -> return Error {code = 1;msg = sprintf "%s created failed becuase SKU already exist" newInventory.InventoryName}
 
         }
         
@@ -156,8 +156,8 @@ module InventoryRepo =
                         Set((fun i -> i.Active),newInventory.Active)
         let updateRes = db.inventoryCollection.UpdateOne(filter,update)
         match updateRes.IsAcknowledged with
-        | true -> Ok { Code = updateRes.ModifiedCount; msg = sprintf "%s Update Success" newInventory.InventoryName}
-        | false -> Error { Code = updateRes.ModifiedCount; msg = sprintf "%s Update Failed" newInventory.InventoryName}
+        | true -> Ok { code = updateRes.ModifiedCount; msg = sprintf "%s Update Success" newInventory.InventoryName}
+        | false -> Error { code = updateRes.ModifiedCount; msg = sprintf "%s Update Failed" newInventory.InventoryName}
     let updateNInventory (newInventories : Inventories) = 
         newInventories |> Array.map(fun i -> updateInventory i)
     let removeInventory (inventoryId : BsonObjectId) = 
